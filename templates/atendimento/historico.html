@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+
+{% block title %}Histórico de Atendimentos - Origem Assist{% endblock %}
+
+{% block content %}
+<div class="container mt-4 mb-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="mb-1">📊 Histórico de Atendimentos</h2>
+            <p class="text-muted mb-0">Registros salvos em tempo real na base de dados</p>
+        </div>
+        <a href="{% url 'home' %}" class="btn btn-outline-secondary">← Voltar ao Início</a>
+    </div>
+
+    <!-- Indicadores Resumidos -->
+    <div class="row g-3 mb-4">
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm text-center p-3">
+                <span class="text-muted small text-uppercase fw-bold">Total Registrado</span>
+                <h2 class="text-dark fw-bold mb-0 mt-1">{{ total_geral }}</h2>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm text-center p-3 border-start border-danger border-4">
+                <span class="text-danger small text-uppercase fw-bold">🚨 Emergenciais</span>
+                <h2 class="text-danger fw-bold mb-0 mt-1">{{ total_em }}</h2>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm text-center p-3 border-start border-primary border-4">
+                <span class="text-primary small text-uppercase fw-bold">📋 Não Emergenciais</span>
+                <h2 class="text-primary fw-bold mb-0 mt-1">{{ total_ne }}</h2>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tabela de Registros -->
+    <div class="card border-0 shadow-sm">
+        <div class="card-body p-0">
+            {% if ocorrencias %}
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th class="ps-4">Protocolo</th>
+                            <th>Fluxo</th>
+                            <th>Tipo de Ocorrência</th>
+                            <th>Solicitante</th>
+                            <th>Localidade / Endereço</th>
+                            <th class="text-end pe-4">Ação</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in ocorrencias %}
+                        <tr>
+                            <td class="ps-4 fw-bold">#{{ item.id }}</td>
+                            <td>
+                                {% if item.tipo_atendimento == 'EM' %}
+                                    <span class="badge bg-danger">🚨 Emergencial</span>
+                                {% else %}
+                                    <span class="badge bg-primary">📋 Não Emergencial</span>
+                                {% endif %}
+                            </td>
+                            <td class="fw-semibold">{{ item.tipo_ocorrencia }}</td>
+                            <td>
+                                <div>{{ item.nome_solicitante }}</div>
+                                <small class="text-muted">{{ item.telefone }}</small>
+                            </td>
+                            <td>
+                                <div>{{ item.endereco }}</div>
+                                {% if item.estado %}
+                                    <small class="text-muted">{{ item.estado }}</small>
+                                {% endif %}
+                            </td>
+                            <td class="text-end pe-4">
+                                {% if item.tipo_atendimento == 'EM' %}
+                                    <a href="{% url 'procedimentos' item.id %}" class="btn btn-sm btn-outline-danger">Ver Procedimentos</a>
+                                {% else %}
+                                    <a href="{% url 'procedimentos_ne' item.id %}" class="btn btn-sm btn-outline-primary">Ver Procedimentos</a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="text-center p-5">
+                <p class="text-muted mb-3">Nenhum atendimento registrado até o momento.</p>
+                <a href="{% url 'home' %}" class="btn btn-primary">Iniciar Primeiro Atendimento</a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

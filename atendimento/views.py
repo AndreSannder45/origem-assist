@@ -108,3 +108,20 @@ def nao_emergencial(request):
 def procedimentos_ne(request, ocorrencia_id):
     ocorrencia = Ocorrencia.objects.get(id=ocorrencia_id)
     return render(request, "atendimento/procedimentos_ne.html", {"ocorrencia": ocorrencia})
+
+@login_required
+def historico(request):
+    ocorrencias = Ocorrencia.objects.all().order_by('-id')
+    total_geral = ocorrencias.count()
+    total_em = ocorrencias.filter(tipo_atendimento="EM").count()
+    total_ne = ocorrencias.filter(tipo_atendimento="NE").count()
+    return render(
+        request,
+        "atendimento/historico.html",
+        {
+            "ocorrencias": ocorrencias,
+            "total_geral": total_geral,
+            "total_em": total_em,
+            "total_ne": total_ne,
+        }
+    )

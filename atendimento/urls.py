@@ -12,4 +12,7 @@ urlpatterns = [
     # Fluxo Não Emergencial
     path("nao-emergencial/", views.nao_emergencial, name="nao_emergencial"),
     path("procedimentos-ne/<int:ocorrencia_id>/", views.procedimentos_ne, name="procedimentos_ne"),
+
+    # Histórico de Ocorrências
+    path("historico/", views.historico, name="historico"),
 ]

@@ -1,19 +1,36 @@
 {% extends 'base.html' %}
- 
+
 {% block title %}Procedimentos Operacionais{% endblock %}
- 
+
 {% block content %}
 <div class="card shadow border-0 mb-4">
     <div class="card-header bg-danger text-white">
-        <h3 class="mb-0">🚨 Ações Imediatas - Atendimento Registado</h3>
+        <h3 class="mb-0">🚨 Ações Imediatas - Atendimento Registrado</h3>
     </div>
-    
+
     <div class="card-body">
         <div class="alert alert-success">
-            <strong>Ocorrência #{{ ocorrencia.id }} guardada com sucesso!</strong><br>
-            Solicitante: {{ ocorrencia.nome_solicitante }} | Tipo: {{ ocorrencia.tipo_ocorrencia }}
+            <strong>Ocorrência #{{ ocorrencia.id }} salva com sucesso!</strong><br>
+            Solicitante: {{ ocorrencia.nome_solicitante }} | Tipo: <strong>{{ ocorrencia.tipo_ocorrencia }}</strong>
         </div>
- 
+
+        <!-- Resumo pronto para copiar -->
+        <div class="d-flex justify-content-between align-items-center mt-4 border-bottom pb-2">
+            <h5 class="text-danger mb-0">Resumo Coletado (Copiar para ITSM / E-mail)</h5>
+            <button type="button" class="btn btn-sm btn-outline-danger" onclick="copiarResumo()">Copiar Resumo</button>
+        </div>
+        <pre id="textoResumo" class="bg-light p-3 rounded border mt-2" style="white-space: pre-wrap;">Protocolo: #{{ ocorrencia.id }}
+Tipo de Ocorrência: {{ ocorrencia.tipo_ocorrencia }}
+Solicitante: {{ ocorrencia.nome_solicitante }}
+Telefone: {{ ocorrencia.telefone }}
+Estado: {{ ocorrencia.estado }}
+Endereço: {{ ocorrencia.endereco }}
+Ponto de Referência: {{ ocorrencia.referencia }}
+
+Respostas do Questionário:
+{% for pergunta, resposta in ocorrencia.respostas_questionario.items %}- {{ pergunta }}: {{ resposta }}
+{% endfor %}</pre>
+
         <h5 class="text-danger mt-4 border-bottom pb-2">1. Abertura do Chamado (Cervello ITSM)</h5>
         <ul>
             <li><strong>Fila:</strong> ORI_SUPORTE-NÍVEL 1</li>
@@ -21,7 +38,7 @@
             <li><strong>Categoria:</strong> Orig.-Emergencial</li>
             <li><em>Instrução:</em> Preencha todos os campos com os dados coletados e atualize com as ações realizadas.</li>
         </ul>
- 
+
         <h5 class="text-danger mt-4 border-bottom pb-2">2. Comunicação e E-mail</h5>
         <ul>
             <li><strong>Para:</strong> sms-origem@origemenergia.com</li>
@@ -29,7 +46,7 @@
             <li><strong>Assunto:</strong> Chamado emergencial (Especificar se é simulado ou não)</li>
             <li><em>Instrução:</em> Envie o resumo completo da solicitação.</li>
         </ul>
- 
+
         <h5 class="text-danger mt-4 border-bottom pb-2">3. Acionamento de Plantonistas (Tolerância: 5 min no Primário)</h5>
         <div class="table-responsive">
             <table class="table table-bordered table-striped">
@@ -59,17 +76,27 @@
                 </tbody>
             </table>
         </div>
-        
+
         <div class="alert alert-warning mt-3">
             <strong>Regras de Acompanhamento:</strong><br>
             - Se o plantonista não retornar em 30 min, altere o status para "Aguardando Cliente".<br>
-            - Faça uma nova cobrança a cada 2 horas e registe no chamado.<br>
+            - Faça uma nova cobrança a cada 2 horas e registre no chamado.<br>
             - <strong>O encerramento só deve ser feito com a AUTORIZAÇÃO do Plantonista.</strong>
         </div>
- 
-        <div class="d-flex justify-content-end mt-4">
+
+        <div class="d-flex justify-content-between mt-4">
+            <a href="{% url 'historico' %}" class="btn btn-outline-secondary btn-lg">Ver Histórico</a>
             <a href="{% url 'home' %}" class="btn btn-primary btn-lg">Finalizar e Voltar ao Início</a>
         </div>
     </div>
 </div>
+
+<script>
+function copiarResumo() {
+    const texto = document.getElementById("textoResumo").innerText;
+    navigator.clipboard.writeText(texto).then(() => {
+        alert("Resumo copiado para a área de transferência!");
+    });
+}
+</script>
 {% endblock %}

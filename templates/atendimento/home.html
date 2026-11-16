@@ -1,43 +1,72 @@
 {% extends 'base.html' %}
- 
-{% block title %}
-Origem Assist
-{% endblock %}
- 
+
+{% block title %}Origem Assist - Apoio Operacional{% endblock %}
+
 {% block content %}
- 
-<div class="text-center">
- 
-    <h1 class="display-4">
-        Origem Assist
-    </h1>
- 
-    <p class="lead">
-        Sistema Inteligente de Apoio Operacional
-    </p>
- 
-    <hr>
- 
-    <div class="d-grid gap-4 col-6 mx-auto">
- 
-        <a href="/emergencial/" class="btn btn-danger btn-lg">
-            🚨 Atendimento Emergencial
-        </a>
- 
-        <a href="/nao-emergencial/" class="btn btn-primary btn-lg">
-            📋 Atendimento Não Emergencial
-        </a>
- 
+<div class="container py-4">
+    <div class="text-center mb-5">
+        <span class="badge bg-primary-subtle text-primary border border-primary-subtle px-3 py-2 mb-2">
+            Operação Origem Energia
+        </span>
+        <h1 class="display-5 fw-bold">Origem Assist</h1>
+        <p class="lead text-muted">Sistema Inteligente de Apoio e Padronização Operacional</p>
     </div>
- 
-    <div class="mt-5 alert alert-info">
- 
-        🤖 <strong>Joy IA</strong><br>
- 
-        Em breve auxiliará durante os atendimentos.
- 
+
+    <div class="row g-4 justify-content-center">
+        <!-- Card Emergencial -->
+        <div class="col-md-5">
+            <div class="card h-100 border-0 shadow-sm border-top border-danger border-4">
+                <div class="card-body d-flex flex-column p-4">
+                    <h4 class="card-title text-danger fw-bold mb-2">🚨 Atendimento Emergencial</h4>
+                    <p class="card-text text-muted flex-grow-1">
+                        Triagem guiada por cenário crítico, questionário dinâmico e matriz de acionamento imediato de plantonistas.
+                    </p>
+                    <a href="{% url 'emergencial' %}" class="btn btn-danger btn-lg w-100 mt-3">
+                        Iniciar Emergencial →
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card Não Emergencial -->
+        <div class="col-md-5">
+            <div class="card h-100 border-0 shadow-sm border-top border-primary border-4">
+                <div class="card-body d-flex flex-column p-4">
+                    <h4 class="card-title text-primary fw-bold mb-2">📋 Atendimento Não Emergencial</h4>
+                    <p class="card-text text-muted flex-grow-1">
+                        Coleta estruturada para Contrato, Pagamento ou Outros com script padrão e guia de abertura no Cervello ITSM.
+                    </p>
+                    <a href="{% url 'nao_emergencial' %}" class="btn btn-primary btn-lg w-100 mt-3">
+                        Iniciar Não Emergencial →
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Barra de Histórico -->
+        <div class="col-md-10">
+            <div class="card border-0 shadow-sm bg-white">
+                <div class="card-body d-flex flex-column flex-md-row justify-content-between align-items-center p-4 gap-3">
+                    <div>
+                        <h5 class="fw-bold mb-1">📊 Histórico de Ocorrências</h5>
+                        <p class="text-muted mb-0 small">Consulte todos os chamados registrados e reabra os procedimentos operacionais a qualquer momento.</p>
+                    </div>
+                    <a href="{% url 'historico' %}" class="btn btn-outline-dark btn-lg px-4">
+                        Consultar Registros
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card Joy IA -->
+        <div class="col-md-10">
+            <div class="alert alert-info border-0 shadow-sm d-flex align-items-center gap-3 mb-0 p-3">
+                <span class="fs-3">🤖</span>
+                <div>
+                    <strong>Joy IA (Próxima Fase):</strong> Assistente inteligente embarcado para sugerir classificações e preencher resumos automaticamente durante a chamada.
+                </div>
+            </div>
+        </div>
     </div>
- 
 </div>
- 
 {% endblock %}
