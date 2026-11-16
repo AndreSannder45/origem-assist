@@ -68,9 +68,14 @@ def resumo(request):
             tipo_ocorrencia=tipo_ocorrencia,
             respostas_questionario=respostas
         )
-        request.session.flush()
+        for chave in ['dados_iniciais', 'tipo_ocorrencia', 'respostas']:
+            request.session.pop(chave, None)
         return redirect('procedimentos', ocorrencia_id=nova_ocorrencia.id)
-    return render(request, "atendimento/resumo.html", {'dados_iniciais': dados_iniciais, 'tipo_ocorrencia': tipo_ocorrencia, 'respostas': respostas})
+    return render(
+        request,
+        "atendimento/resumo.html",
+        {'dados_iniciais': dados_iniciais, 'tipo_ocorrencia': tipo_ocorrencia, 'respostas': respostas}
+    )
 
 
 @login_required
