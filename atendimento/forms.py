@@ -48,25 +48,37 @@ class AtendimentoNaoEmergencialForm(forms.Form):
         ('Pagamento', 'Pagamento (Pendências, cobranças ou comprovantes)'),
         ('Outros', 'Outros (Demais solicitações)'),
     ]
- 
+
     nome = forms.CharField(
         label="Nome completo",
         max_length=100,
-        widget=forms.TextInput(attrs={"class": "form-control form-control-lg"})
+        widget=forms.TextInput(attrs={
+            "class": "form-control form-control-lg",
+            "placeholder": "Digite o nome completo do solicitante"
+        })
     )
     telefone = forms.CharField(
         label="Telefone de contato",
         max_length=20,
-        widget=forms.TextInput(attrs={"class": "form-control form-control-lg"})
+        widget=forms.TextInput(attrs={
+            "class": "form-control form-control-lg",
+            "placeholder": "(00) 00000-0000"
+        })
     )
     email = forms.EmailField(
         label="E-mail de contato",
-        widget=forms.EmailInput(attrs={"class": "form-control form-control-lg"})
+        widget=forms.EmailInput(attrs={
+            "class": "form-control form-control-lg",
+            "placeholder": "nome@exemplo.com"
+        })
     )
     endereco = forms.CharField(
         label="Endereço / Localidade",
         max_length=255,
-        widget=forms.TextInput(attrs={"class": "form-control form-control-lg"})
+        widget=forms.TextInput(attrs={
+            "class": "form-control form-control-lg",
+            "placeholder": "Cidade, estado ou endereço completo..."
+        })
     )
     tipo_solicitacao = forms.ChoiceField(
         label="Tipo de solicitação",
@@ -75,5 +87,9 @@ class AtendimentoNaoEmergencialForm(forms.Form):
     )
     descricao = forms.CharField(
         label="Descrição detalhada",
-        widget=forms.Textarea(attrs={"class": "form-control", "rows": 5})
+        widget=forms.Textarea(attrs={
+            "class": "form-control",
+            "rows": 5,
+            "placeholder": "Descreva detalhadamente a dúvida, pendência ou solicitação..."
+        })
     )

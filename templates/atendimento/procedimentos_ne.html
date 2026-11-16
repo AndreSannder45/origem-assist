@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block title %}Procedimentos - Atendimento Não Emergencial{% endblock %}
+
+{% block content %}
+<div class="card shadow border-0 mb-4">
+    <div class="card-header bg-primary text-white">
+        <h3 class="mb-0">📋 Ações Operacionais - Atendimento Não Emergencial</h3>
+    </div>
+
+    <div class="card-body">
+        <div class="alert alert-success">
+            <strong>Solicitação #{{ ocorrencia.id }} registrada com sucesso!</strong><br>
+            Solicitante: {{ ocorrencia.nome_solicitante }} | Tipo: <strong>{{ ocorrencia.tipo_ocorrencia }}</strong>
+        </div>
+
+        <!-- Resumo pronto para copiar no ITSM / E-mail -->
+        <div class="d-flex justify-content-between align-items-center mt-4 border-bottom pb-2">
+            <h5 class="text-primary mb-0">Resumo Coletado (Copiar para ITSM / E-mail)</h5>
+            <button type="button" class="btn btn-sm btn-outline-primary" onclick="copiarResumo()">Copiar Resumo</button>
+        </div>
+        <pre id="textoResumo" class="bg-light p-3 rounded border mt-2" style="white-space: pre-wrap;">Protocolo: #{{ ocorrencia.id }}
+Solicitante: {{ ocorrencia.nome_solicitante }}
+Telefone: {{ ocorrencia.telefone }}
+Endereço / Localidade: {{ ocorrencia.endereco }}
+Tipo de Solicitação: {{ ocorrencia.tipo_ocorrencia }}
+{% for chave, valor in ocorrencia.respostas_questionario.items %}{{ chave }}: {{ valor }}
+{% endfor %}</pre>
+
+        <h5 class="text-primary mt-4 border-bottom pb-2">1. Abertura do Chamado (Cervello ITSM)</h5>
+        <ul>
+            <li><strong>Acesso:</strong> <code>cervelloesm.com.br/IK</code></li>
+            <li><strong>Fila:</strong> ORI_SUPORTE-NÍVEL 1</li>
+            <li><strong>Solicitante:</strong> "Atendimento Origem"</li>
+            <li><strong>Categoria:</strong> Origem - Não Emergencial</li>
+            <li><em>Instrução:</em> Preencher todos os campos obrigatórios com os dados coletados (destacando o tipo <strong>{{ ocorrencia.tipo_ocorrencia }}</strong> na descrição) e salvar o chamado.</li>
+        </ul>
+
+        <h5 class="text-primary mt-4 border-bottom pb-2">2. Envio de E-mail e Registro de Ação</h5>
+        <ul>
+            <li><strong>Para:</strong> contato@origemenergia.com; ruan.santos@origemenergia.com; camila.godoi@ik.com.br</li>
+            <li><strong>Assunto:</strong> Atendimento Não Emergencial - {{ ocorrencia.tipo_ocorrencia }} (Protocolo #{{ ocorrencia.id }})</li>
+            <li><em>Instrução:</em> Enviar o resumo completo da solicitação e atualizar o chamado no ITSM com a ação realizada (ex.: <code>"E-mail encaminhado em HH:MM"</code>).</li>
+        </ul>
+
+        <div class="alert alert-warning mt-3">
+            <strong>3. Regras de Acompanhamento:</strong><br>
+            - Se não houver retorno, manter o chamado aberto e registrar nova interação.<br>
+            - Realizar cobranças periódicas conforme a necessidade do caso.<br>
+            - <strong>Encerrar o chamado somente após solução confirmada pelo solicitante.</strong>
+        </div>
+
+        <div class="alert alert-info mt-3">
+            💬 <strong>Script de Encerramento do Analista:</strong><br>
+            <em>"Sua solicitação foi registrada e encaminhada. Em breve você receberá um retorno. Obrigado pelo contato!"</em>
+        </div>
+
+        <div class="d-flex justify-content-end mt-4">
+            <a href="{% url 'home' %}" class="btn btn-primary btn-lg">Finalizar e Voltar ao Início</a>
+        </div>
+    </div>
+</div>
+
+<script>
+function copiarResumo() {
+    const texto = document.getElementById("textoResumo").innerText;
+    navigator.clipboard.writeText(texto).then(() => {
+        alert("Resumo copiado para a área de transferência!");
+    });
+}
+</script>
+{% endblock %}

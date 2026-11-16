@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block title %}Atendimento Não Emergencial{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <!-- Cabeçalho e Progresso -->
+    <div class="mb-4">
+        <h2 class="text-primary">📋 Origem Assist</h2>
+        <h4>Atendimento Não Emergencial</h4>
+        <p class="text-muted">Progresso: Etapa 1 de 2 - Coleta de Dados do Solicitante</p>
+    </div>
+
+    <!-- Script de Abertura do Analista -->
+    <div class="alert alert-info shadow-sm">
+        💬 <strong>Script de Abertura:</strong><br>
+        <em>"Central de Suporte Origem, bom dia. Como posso ajudar? Vou registrar sua solicitação, pode me informar os dados?"</em>
+    </div>
+
+    <!-- Formulário -->
+    <form method="POST" action="">
+        {% csrf_token %}
+
+        <div class="card shadow-sm border-0 mb-4">
+            <div class="card-body">
+                <h5 class="card-title text-primary mb-3">Dados do Solicitante e Solicitação</h5>
+                <div class="row">
+                    <div class="col-md-12 mb-3">
+                        <label for="{{ form.nome.id_for_label }}" class="form-label fw-bold">👤 {{ form.nome.label }}</label>
+                        {{ form.nome }}
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label for="{{ form.telefone.id_for_label }}" class="form-label fw-bold">📞 {{ form.telefone.label }}</label>
+                        {{ form.telefone }}
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label for="{{ form.email.id_for_label }}" class="form-label fw-bold">✉️ {{ form.email.label }}</label>
+                        {{ form.email }}
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label for="{{ form.endereco.id_for_label }}" class="form-label fw-bold">📍 {{ form.endereco.label }}</label>
+                        {{ form.endereco }}
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label for="{{ form.tipo_solicitacao.id_for_label }}" class="form-label fw-bold">🗂️ {{ form.tipo_solicitacao.label }}</label>
+                        {{ form.tipo_solicitacao }}
+                    </div>
+
+                    <div class="col-md-12 mb-3">
+                        <label for="{{ form.descricao.id_for_label }}" class="form-label fw-bold">📝 {{ form.descricao.label }}</label>
+                        {{ form.descricao }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-between mt-4 mb-5">
+            <a href="{% url 'home' %}" class="btn btn-outline-secondary btn-lg">← Voltar</a>
+            <button type="submit" class="btn btn-primary btn-lg">Registrar e Gerar Procedimentos →</button>
+        </div>
+    </form>
+</div>
+{% endblock %}
